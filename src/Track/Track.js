@@ -1,17 +1,15 @@
 import React from 'react'
 
-class Track extends React.Component {
-  render() {
-    return (
-      <div className="Track">
-        <div className="Track-information">
-          <h3>{this.props.songTitle}</h3>
-          <p>{this.props.artist} | {this.props.album}</p>
-        </div>
-        <a className="Track-action">+</a>
+const Track = (props: {track: {title: string, artist: string, album: string}, handleTrackAction: Function}) => {
+  return (
+    <div className="Track">
+      <div className="Track-information">
+        <h3>{props.track.title}</h3>
+        <p>{props.track.artist} | {props.track.album}</p>
       </div>
-    )
-  }
+      <a onClick={() => props.handleTrackAction(props.track)} className="Track-action">+</a>
+    </div>
+  )
 }
 
 

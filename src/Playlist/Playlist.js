@@ -42,39 +42,54 @@ const playlistTracks = [
   }
 ]
 
-const TrackList = (props: {tracks: Array<Object>}) => {
+const TrackList = (props: {tracks: Array<Object>, handleTrackAction: Function}) => {
   return (
       <div className="TrackList">
-        {props.tracks.map(track => <Track songTitle={track.title} artist={track.artist} album={track.album}/>)}
+        {props.tracks.map((track, index) => <Track key={index} track={track} handleTrackAction={props.handleTrackAction} />)}
       </div>
   )
 }
 
-const SearchResults = () => {
+const SearchResults = (props: {handleTrackAction: Function}) => {
   return (
     <div className="SearchResults">
       <h2>Results</h2>
-      <TrackList tracks={searchResultsTracks}/>
+      <TrackList tracks={searchResultsTracks} handleTrackAction={props.handleTrackAction}/>
     </div>
   )
 }
 
-const NewPlaylist = () => {
+const NewPlaylist = (props: {handleTrackAction: Function}) => {
   return (
     <div className="Playlist">
       <input value='New Playlist' />
-      <TrackList tracks={playlistTracks} />
+      <TrackList tracks={props.tracksNewPlaylist} handleTrackAction={props.handleTrackAction} />
       <a className="Playlist-save">SAVE TO SPOTIFY</a>
     </div>
   )
 }
 
 class Playlist extends React.Component {
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        tracksNewPlaylist: []
+      }
+      this.handleTrackAction = this.handleTrackAction.bind(this)
+    }
+
+    handleTrackAction(track) {
+      this.setState({
+        tracks: this.state.tracksNewPlaylist.push(track)
+      })
+    }
+
     render() {
         return (
             <div className="App-playlist">
-              <SearchResults />
-              <NewPlaylist />
+              <SearchResults handleTrackAction={this.handleTrackAction} />
+              <NewPlaylist tracksNewPlaylist={this.state.tracksNewPlaylist} handleTrackAction={this.handleTrackAction} />
             </div>
         )
     }
