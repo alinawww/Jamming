@@ -48,7 +48,7 @@ class App extends Component {
     saveToSpotify() {
         const playlistUris = this.state.tracksNewPlaylist.map(playlistTrack => playlistTrack.uri)
         Spotify.savePlaylist(this.state.playlistName, playlistUris)
-        alert(`You\'ve successfully added the '${this.state.playlistName}' playlist to Spotify!`)
+        alert(`You've successfully added the '${this.state.playlistName}' playlist to Spotify!`)
         this.setState({
             tracks: [],
             tracksNewPlaylist: [],
