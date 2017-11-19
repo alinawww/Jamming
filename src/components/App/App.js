@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar/SearchBar'
-import Playlist from './components/Playlist/Playlist'
-import Spotify from './util/Spotify.js'
+import SearchBar from './../SearchBar/SearchBar'
+import Playlist from './../Playlist/Playlist'
+import Spotify from '../../util/Spotify.js'
 
 Spotify.getAccessToken()
 

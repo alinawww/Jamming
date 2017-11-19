@@ -1,3 +1,4 @@
+import './Track.css'
 import React from 'react'
 
 const Track = (props: {track: {name: string, artist: string, album: string}, handleTrackAction: Function, isSearchResult: boolean}) => (

@@ -1,3 +1,4 @@
+import './Playlist.css'
 import React from 'react'
 import Track from '../Track/Track'
 
