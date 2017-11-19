@@ -15,14 +15,13 @@ const SearchResults = (props: {tracks: Array<Object>, addToPlaylist: Function}) 
     </div>
 )
 
-const NewPlaylist = (props: {removeFromPlaylist: Function, saveToSpotify: Function, handlePlaylistNameChange: Function, tracksNewPlaylist: Array<Object>}) => (
+const NewPlaylist = (props: {removeFromPlaylist: Function, saveToSpotify: Function, handlePlaylistNameChange: Function, tracksNewPlaylist: Array<Object>, playlistName: string}) => (
     <div className="Playlist">
-        <input onChange={(event) => props.handlePlaylistNameChange(event)} />
+        <input onChange={(event) => props.handlePlaylistNameChange(event)} value={props.playlistName}/>
         <TrackList tracks={props.tracksNewPlaylist} handleTrackAction={props.removeFromPlaylist} isSearchResult={false}/>
         <a onClick={props.saveToSpotify} className="Playlist-save">SAVE TO SPOTIFY</a>
     </div>
 )
-
 
 class Playlist extends React.Component {
     render() {
@@ -30,12 +29,15 @@ class Playlist extends React.Component {
             <div className="App-playlist">
                 <SearchResults
                     tracks={this.props.tracks}
-                    addToPlaylist={this.props.addToPlaylist} />
+                    addToPlaylist={this.props.addToPlaylist}
+                    />
                 <NewPlaylist
                     tracksNewPlaylist={this.props.tracksNewPlaylist}
                     removeFromPlaylist={this.props.removeFromPlaylist}
                     handlePlaylistNameChange={this.props.handlePlaylistNameChange}
-                    saveToSpotify={this.props.saveToSpotify}/>
+                    saveToSpotify={this.props.saveToSpotify}
+                    playlistName={this.props.playlistName}
+                    />
             </div>
         )
     }

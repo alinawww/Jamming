@@ -18,7 +18,7 @@ class App extends Component {
         this.state = {
             tracks: [],
             tracksNewPlaylist: [],
-            playlistName: ''
+            playlistName: 'New Playlist'
         }
     }
 
@@ -48,6 +48,12 @@ class App extends Component {
     saveToSpotify() {
         const playlistUris = this.state.tracksNewPlaylist.map(playlistTrack => playlistTrack.uri)
         Spotify.savePlaylist(this.state.playlistName, playlistUris)
+        alert(`You\'ve successfully added the '${this.state.playlistName}' playlist to Spotify!`)
+        this.setState({
+            tracks: [],
+            tracksNewPlaylist: [],
+            playlistName: 'New Playlist'
+        })
     }
 
     render() {
@@ -63,6 +69,7 @@ class App extends Component {
                         addToPlaylist={this.addToPlaylist}
                         removeFromPlaylist={this.removeFromPlaylist}
                         handlePlaylistNameChange={this.handlePlaylistNameChange}
+                        playlistName={this.state.playlistName}
                         />
                 </div>
             </div>
