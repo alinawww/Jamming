@@ -1,5 +1,7 @@
 const clientId = '9e1f9066ec97451cae929b4912a502bf'
-const redirectUri = 'http://alinaisjamming.surge.sh/'
+// const redirectUri = 'http://alinaisjamming.surge.sh/'
+const redirectUri = 'http://localhost:3000/'
+
 
 let accessToken = undefined
 let expiresIn = undefined
@@ -30,6 +32,7 @@ const Spotify = {
         .then(jsonResponse => {
             if (!jsonResponse.tracks) return []
             return jsonResponse.tracks.items.map(track => {
+                console.log(track);
                 return {
                     id: track.id,
                     name: track.name,
