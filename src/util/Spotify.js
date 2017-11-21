@@ -1,5 +1,3 @@
-//hosted on gh-pages
-
 const clientId = '9e1f9066ec97451cae929b4912a502bf'
 const redirectUri = 'http://localhost:3000/'
 
