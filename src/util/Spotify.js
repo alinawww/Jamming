@@ -1,37 +1,43 @@
 const clientId = '9e1f9066ec97451cae929b4912a502bf'
-const redirectUri = 'http://localhost:3000/'
+const redirectUri = 'http://jamalina.surge.sh/'
 
+let accessToken
+let expiresIn
 
-let accessToken = undefined
-let expiresIn = undefined
-const redirectUrl = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`
+const redirectUrl = `https://accounts.spotify.com/authorize?response_type=token&scope=playlist-modify-public&client_id=${clientId}&redirect_uri=${redirectUri}`
+const apiSpotifyUrl = 'https://api.spotify.com/v1'
 
 const Spotify = {
     getAccessToken() {
         if (accessToken) new Promise(resolve => resolve(accessToken))
+
         const accessTokenUrl = window.location.href.match(/access_token=([^&]*)/)
         const expiresInUrl = window.location.href.match(/expires_in=([^&]*)/)
 
         if (accessTokenUrl && expiresInUrl) {
+            // Get accessToken and expirationTime from the URL
             accessToken = accessTokenUrl[1]
             expiresIn = expiresInUrl[1]
             window.setTimeout(() => accessToken = '', expiresIn * 1000)
             window.history.pushState('Access Token', null, '/')
         }
         else {
+            // If there's no access token, redirect user to Authorization screen
             window.location = redirectUrl
         }
+        return accessToken
     },
+
     search(searchTerm) {
+        accessToken =  this.getAccessToken()
         const headers = {Authorization: `Bearer ${accessToken}`}
-        const searchUrl = `https://api.spotify.com/v1/search?type=track&q=${searchTerm.replace(' ', '%20')}`
+        const searchUrl = `${apiSpotifyUrl}/search?type=track&q=${searchTerm.replace(' ', '%20')}`
 
         return fetch(searchUrl, {headers})
         .then(response => response.json())
         .then(jsonResponse => {
             if (!jsonResponse.tracks) return []
             return jsonResponse.tracks.items.map(track => {
-                console.log(track);
                 return {
                     id: track.id,
                     name: track.name,
@@ -41,21 +47,28 @@ const Spotify = {
                 }
             })
         })
+        .catch(error => {
+            console.error('Error when getting the tracks information:', error)
+        })
     },
-    savePlaylist(playlistName, trackUris) {
-        if (!playlistName || !trackUris) return
 
-        const userUrl = 'https://api.spotify.com/v1/me'
+    savePlaylist(playlistName, trackUris) {
+        accessToken =  this.getAccessToken()
+        if (!playlistName || !trackUris) return
+        const userUrl = `${apiSpotifyUrl}/me`
         const headers = {Authorization: `Bearer ${accessToken}`}
 
         let userId = undefined
         let playlistId = undefined
 
+        // Retrieve spotify user
         return fetch(userUrl, {headers})
         .then(response => response.json())
         .then(jsonResponse => userId = jsonResponse.id)
+
+        // create new playlist for the current user
         .then(() => {
-            const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`
+            const createPlaylistUrl = `${apiSpotifyUrl}/users/${userId}/playlists`
             fetch(createPlaylistUrl, {
                 method: 'POST',
                 headers,
@@ -63,15 +76,24 @@ const Spotify = {
             })
             .then(response => response.json())
             .then(jsonResponse => playlistId = jsonResponse.id)
+
+            // add tracks to the newly created playlist
             .then(() => {
-                const addPlaylistTracksUrl = `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`
+                const addPlaylistTracksUrl = `${apiSpotifyUrl}/users/${userId}/playlists/${playlistId}/tracks`
                 fetch(addPlaylistTracksUrl, {
                     method: 'POST',
                     headers,
                     body: JSON.stringify({uris: trackUris})
                 })
             })
+            .catch(error => {
+                console.error('Error when adding the selected tracks to the playlist:', error)
+            })
         })
+        .catch(error => {
+            console.error('Error when creating new playlist:', error)
+        })
+
 
     }
 }
