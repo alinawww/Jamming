@@ -25,18 +25,19 @@ const NewPlaylist = (props: {removeFromPlaylist: Function, saveToSpotify: Functi
 
 class Playlist extends React.Component {
     render() {
+        const {tracks, addToPlaylist, tracksNewPlaylist, removeFromPlaylist, handlePlaylistNameChange, saveToSpotify, playlistName} = this.props
         return (
             <div className="App-playlist">
                 <SearchResults
-                    tracks={this.props.tracks}
-                    addToPlaylist={this.props.addToPlaylist}
+                    tracks={tracks}
+                    addToPlaylist={addToPlaylist}
                     />
                 <NewPlaylist
-                    tracksNewPlaylist={this.props.tracksNewPlaylist}
-                    removeFromPlaylist={this.props.removeFromPlaylist}
-                    handlePlaylistNameChange={this.props.handlePlaylistNameChange}
-                    saveToSpotify={this.props.saveToSpotify}
-                    playlistName={this.props.playlistName}
+                    tracksNewPlaylist={tracksNewPlaylist}
+                    removeFromPlaylist={removeFromPlaylist}
+                    handlePlaylistNameChange={handlePlaylistNameChange}
+                    saveToSpotify={saveToSpotify}
+                    playlistName={playlistName}
                     />
             </div>
         )

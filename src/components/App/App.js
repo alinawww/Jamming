@@ -18,7 +18,8 @@ class App extends Component {
         this.state = {
             tracks: [],
             tracksNewPlaylist: [],
-            playlistName: 'New Playlist'
+            playlistName: 'New Playlist',
+            isPlaying: false
         }
     }
 
