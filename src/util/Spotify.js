@@ -1,6 +1,8 @@
 const clientId = '9e1f9066ec97451cae929b4912a502bf'
-// const redirectUri = 'http://jamalina.surge.sh/'
-const redirectUri = 'http://localhost:3000/'
+const redirectUri = 'http://jamalina.surge.sh/'
+
+// TODO: distinguish between development and production env
+// const redirectUri = 'http://localhost:3000/'
 
 let accessToken
 let expiresIn
