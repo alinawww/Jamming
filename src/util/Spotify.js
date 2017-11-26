@@ -1,5 +1,6 @@
 const clientId = '9e1f9066ec97451cae929b4912a502bf'
-const redirectUri = 'http://jamalina.surge.sh/'
+// const redirectUri = 'http://jamalina.surge.sh/'
+const redirectUri = 'http://localhost:3000/'
 
 let accessToken
 let expiresIn
@@ -29,7 +30,6 @@ const Spotify = {
     },
 
     search(searchTerm) {
-        accessToken =  this.getAccessToken()
         const headers = {Authorization: `Bearer ${accessToken}`}
         const searchUrl = `${apiSpotifyUrl}/search?type=track&q=${searchTerm.replace(' ', '%20')}`
 
@@ -38,12 +38,14 @@ const Spotify = {
         .then(jsonResponse => {
             if (!jsonResponse.tracks) return []
             return jsonResponse.tracks.items.map(track => {
+                console.log(track)
                 return {
                     id: track.id,
                     name: track.name,
                     artist: track.artists[0].name,
                     album: track.album.name,
-                    uri: track.uri
+                    uri: track.uri,
+                    previewUrl: track.preview_url
                 }
             })
         })
